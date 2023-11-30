@@ -43,6 +43,8 @@ export default async (user: JwtPayload | UserJWT, body: any) => {
     }
     return response;
   } catch (err) {
+    if(photo) fs.rmSync(photo.path);
+
     if (err instanceof PrismaClientKnownRequestError) {
       if(err.code == "P2002" && err.meta?.target == "stores_user_id_key") {
         throw new CreateStoreError("User store already exist", 403, "forbidden");
