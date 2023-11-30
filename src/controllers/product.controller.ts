@@ -3,6 +3,7 @@ import createProductService, { CreateProductError } from '../services/products/c
 import findAllProductService from "../services/products/findall.service";
 import detailProductService from "../services/products/detail.service";
 import updateProductService, { UpdateProductError } from "../services/products/update.service";
+import deleteProductService from "../services/products/delete.service";
 
 export const findAllProducts = async (req: Request, res: Response) => {
   try {
@@ -100,6 +101,31 @@ export const updateProduct = async (req: Request, res: Response) => {
         message: err.message
       })
     }
+    return res.status(500).json({
+      code: 500,
+      result: 'internal server error',
+      message: err.message
+    })
+  }
+}
+
+export const deleteProduct = async (req: Request, res: Response) => {
+  try {
+    const product = await deleteProductService(Number(req.params.id), req.user);
+
+    if(!product) return res.status(404).json({
+      code: 404,
+      result: 'not found',
+      message: 'record not found',
+      data: null
+    })
+
+    return res.json({
+      code: 200,
+      result: 'success',
+      message: 'record deleted'
+    })
+  } catch (err: any) {
     return res.status(500).json({
       code: 500,
       result: 'internal server error',

@@ -101,3 +101,30 @@ export const updateProduct = async (id: number, request: any) => {
     throw err
   }
 }
+
+export const deleteProduct = async (id: number) => {
+  try {
+    return await prisma.$transaction([
+      prisma.product.update({
+        data: {
+          deletedAt: new Date().toISOString()
+        },
+        where: {
+          id: id,
+          deletedAt: null
+        }
+      }),
+      prisma.productImage.updateMany({
+        data: {
+          deletedAt: new Date().toISOString()
+        },
+        where :{
+          product_id: id,
+          deletedAt: null
+        }
+      })
+    ])
+  } catch (err) {
+    throw err;
+  }
+}
