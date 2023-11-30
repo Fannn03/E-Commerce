@@ -24,7 +24,10 @@ export const findAllProducts = async (take?: number, skip?: number) => {
           deletedAt: null
         },
         skip: skip,
-        take: take
+        take: take,
+        include: {
+          images: true
+        }
       })
     ])
   } catch (err) {

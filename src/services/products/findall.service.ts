@@ -9,12 +9,13 @@ export default async (query: any) => {
     const products = await findAllProducts(take, skip)
     if(!products[1].length) return null;
 
-    const mapProducts = products[1].map((data: Product) => ({
+    const mapProducts = products[1].map((data: any) => ({
       id: data.id,
       name: data.name,
       slug: data.slug,
       stock: data.stock,
-      price: data.price
+      price: data.price,
+      image: (data.images.length) ? `products/${data.images[0].name}` : `products/${data.images.name}`
     }))
 
     const response = {
