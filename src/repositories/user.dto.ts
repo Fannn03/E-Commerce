@@ -24,7 +24,10 @@ export const findUser = async (username: string): Promise<User | null> => {
   try {
     return await prisma.user.findFirst({
       where: {
-        username: username
+        username: username,
+        AND: [
+          { deletedAt: null }
+        ]
       }
     })
   } catch (err) {
