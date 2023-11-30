@@ -19,3 +19,15 @@ export const createUser = async (request: createUserInterface): Promise<User> =>
     throw err
   }
 }
+
+export const findUser = async (username: string): Promise<User | null> => {
+  try {
+    return await prisma.user.findFirst({
+      where: {
+        username: username
+      }
+    })
+  } catch (err) {
+    throw err
+  }
+}
