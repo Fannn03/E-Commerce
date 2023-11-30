@@ -4,8 +4,6 @@ import { detailProduct } from "../../repositories/product.dto"
 export default async (slug: string) => {
   try {
     const product = await detailProduct(slug);
-    console.log(product);
-    console.log(slug);
     if(!product) return null;
 
     const response = {
