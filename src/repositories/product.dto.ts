@@ -9,6 +9,11 @@ interface createProductInterface {
   price: number
 }
 
+interface detailProductInterface {
+  id?: number,
+  slug?: string,
+}
+
 const prisma = new PrismaClient();
 
 export const findAllProducts = async (take?: number, skip?: number) => {
@@ -58,12 +63,15 @@ export const createProduct = async (product: createProductInterface, productImag
   }
 }
 
-export const detailProduct = async (slug: string) => {
+export const detailProduct = async (query: detailProductInterface) => {
   try {
     return await prisma.product.findFirst({
       where: {
-        slug: slug,
         deletedAt: null,
+        OR: [
+          { id: query.id },
+          { slug: query.slug }
+        ],
         AND: [
           { 
             store: { deletedAt: null }
@@ -73,6 +81,20 @@ export const detailProduct = async (slug: string) => {
       include: {
         store: true,
         images: true
+      }
+    })
+  } catch (err) {
+    throw err
+  }
+}
+
+export const updateProduct = async (id: number, request: any) => {
+  try {
+    return await prisma.product.update({
+      data: request,
+      where: {
+        id: id,
+        deletedAt: null
       }
     })
   } catch (err) {
