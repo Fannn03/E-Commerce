@@ -1,9 +1,11 @@
 import express, { Router } from 'express';
-import userCreateMiddleware from '../middleware/users/user.create.middleware';
-import { userRegister } from '../controllers/user.controller';
+import userRegisterMiddleware from '../middleware/users/user.register.middleware';
+import userLoginMiddleware from '../middleware/users/user.login.middleware';
+import { userLogin, userRegister } from '../controllers/user.controller';
 
 const router: Router = express.Router();
 
-router.post('/create', userCreateMiddleware, userRegister);
+router.post('/create', userRegisterMiddleware, userRegister);
+router.post('/login', userLoginMiddleware, userLogin);
 
 export default router;
