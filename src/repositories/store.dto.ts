@@ -9,7 +9,30 @@ interface createStoreInterface {
   photo?: string | null
 }
 
+interface findStoreInterface {
+  id?: number,
+  slug?: string
+}
+
 const prisma = new PrismaClient();
+
+export const findStore = async (request: findStoreInterface) => {
+  try {
+    return await prisma.store.findFirst({
+      where: {
+        OR: [
+          { id: request.id },
+          { slug: request.slug }
+        ],
+        AND: [
+          { deletedAt: null }
+        ]
+      }
+    })
+  } catch (err) {
+    throw err
+  }
+}
 
 export const createStore = async (request: createStoreInterface) => {
   try {
