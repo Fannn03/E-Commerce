@@ -13,8 +13,6 @@ export default async () => {
 
   const imagesPath = path.join('./public/images')
   const folders = fs.readdirSync(imagesPath)
-  console.log(folders)
-
   if(folders.length != imagesFolder.length) {
     for (let folder of imagesFolder) {
       try {
