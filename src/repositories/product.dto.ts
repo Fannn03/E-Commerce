@@ -57,3 +57,25 @@ export const createProduct = async (product: createProductInterface, productImag
     throw err
   }
 }
+
+export const detailProduct = async (slug: string) => {
+  try {
+    return await prisma.product.findFirst({
+      where: {
+        slug: slug,
+        deletedAt: null,
+        AND: [
+          { 
+            store: { deletedAt: null }
+          }
+        ]
+      },
+      include: {
+        store: true,
+        images: true
+      }
+    })
+  } catch (err) {
+    throw err
+  }
+}
