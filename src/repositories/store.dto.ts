@@ -5,8 +5,8 @@ interface createStoreInterface {
   username: string,
   name: string,
   slug: string,
-  description?: string | undefined,
-  photo?: string | undefined
+  description?: string | null,
+  photo?: string | null
 }
 
 const prisma = new PrismaClient();
