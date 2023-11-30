@@ -36,5 +36,37 @@ model Store {
   updatedAt     DateTime    @updatedAt
   deletedAt     DateTime?
 
+  products      Product[]
+
   @@map("stores")
+}
+
+model Product {
+  id            Int         @id @default(autoincrement())
+  store         Store       @relation(fields: [store_id], references: [id])
+  store_id      Int
+  name          String      @db.VarChar(255)
+  slug          String      @unique @db.VarChar(255)
+  description   String      @db.LongText
+  stock         Int
+  price         Int
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  deletedAt     DateTime?
+
+  images        ProductImage[]
+
+  @@map("products")
+}
+
+model ProductImage {
+  id            Int         @id @default(autoincrement())
+  product       Product     @relation(fields: [product_id], references: [id])
+  product_id    Int
+  name          String      @unique @db.VarChar(255)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  deletedAt     DateTime?
+
+  @@map("product_images")
 }
