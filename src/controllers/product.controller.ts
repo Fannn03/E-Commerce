@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import createProductService, { CreateProductError } from '../services/products/create.service';
 import findAllProductService from "../services/products/findall.service";
 import detailProductService from "../services/products/detail.service";
+import updateProductService, { UpdateProductError } from "../services/products/update.service";
 
 export const findAllProducts = async (req: Request, res: Response) => {
   try {
@@ -20,8 +21,12 @@ export const findAllProducts = async (req: Request, res: Response) => {
       message: 'success get record data',
       data: products
     })
-  } catch (err) {
-
+  } catch (err: any) {
+    return res.status(500).json({
+      code: 500,
+      result: 'internal server error',
+      message: err.message
+    })
   }
 }
 
@@ -69,6 +74,36 @@ export const detailProduct = async (req: Request, res: Response) => {
       data: product
     })
   } catch (err: any) {
+    return res.status(500).json({
+      code: 500,
+      result: 'internal server error',
+      message: err.message
+    })
+  }
+}
 
+export const updateProduct = async (req: Request, res: Response) => {
+  try {
+    const product = await updateProductService(Number(req.params.id), req.user, req.body);
+
+    return res.json({
+      code: 200,
+      result: 'success',
+      message: 'record success updated',
+      data: product
+    })
+  } catch (err: any) {
+    if (err instanceof UpdateProductError) {
+      return res.status(err.code).json({
+        code: err.code,
+        result: err.result,
+        message: err.message
+      })
+    }
+    return res.status(500).json({
+      code: 500,
+      result: 'internal server error',
+      message: err.message
+    })
   }
 }
