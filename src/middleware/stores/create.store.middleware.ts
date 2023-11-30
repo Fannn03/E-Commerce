@@ -4,7 +4,9 @@ import fs from 'fs';
 
 interface errorMessageInterface {
   username?: string,
-  password?: string
+  name?: string,
+  description?: string,
+  photo?: string
 }
 
 export default async (req: Request, res: Response, next: NextFunction) => {
