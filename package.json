@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "dev": "nodemon ./src/main.ts"
+    "dev": "nodemon ./src/main.ts",
+    "build": "npx tsc",
+    "start": "node ./build/main.js"
   },
   "dependencies": {
     "@prisma/client": "^5.6.0",
