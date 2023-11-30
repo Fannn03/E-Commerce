@@ -64,7 +64,7 @@ export default async (body: any) => {
       slug: product.slug,
       images: product.images.map((data: ProductImage) => ({
         id: data.id,
-        name: `producs/${data.name}`
+        name: `products/${data.name}`
       }))
     }
 
