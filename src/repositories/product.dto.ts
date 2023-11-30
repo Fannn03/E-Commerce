@@ -11,6 +11,30 @@ interface createProductInterface {
 
 const prisma = new PrismaClient();
 
+export const findAllProducts = async (take?: number, skip?: number) => {
+  try {
+    return await prisma.$transaction([
+      prisma.product.count({
+        where: {
+          deletedAt: null
+        }
+      }),
+      prisma.product.findMany({
+        where: {
+          deletedAt: null
+        },
+        skip: skip,
+        take: take,
+        include: {
+          images: true
+        }
+      })
+    ])
+  } catch (err) {
+    throw err
+  }
+}
+
 export const createProduct = async (product: createProductInterface, productImage: any) => {
   try {
     return await prisma.product.create({
@@ -26,6 +50,28 @@ export const createProduct = async (product: createProductInterface, productImag
         }
       },
       include: {
+        images: true
+      }
+    })
+  } catch (err) {
+    throw err
+  }
+}
+
+export const detailProduct = async (slug: string) => {
+  try {
+    return await prisma.product.findFirst({
+      where: {
+        slug: slug,
+        deletedAt: null,
+        AND: [
+          { 
+            store: { deletedAt: null }
+          }
+        ]
+      },
+      include: {
+        store: true,
         images: true
       }
     })
